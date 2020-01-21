@@ -2,46 +2,30 @@ import java.sql.*;
 
 public class JdbcTest {
 
-    public static void main(String[] args) throws SQLException {
+    private static final String MYSQL_URL = "jdbc:mysql://localhost:3306/demo";
+    private static final String USER = "student";
+    private static final String PASSWORD = "student";
 
-        Connection myConn = null;
-        Statement myStmt = null;
-        ResultSet myRs = null;
+    private static final String SELECT_FROM_EMPLOYEES = "select * from employees";
 
-        try {
-            // 1. Get a connection to database
-            myConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/demo", "student" , "student");
+    public static void main(String[] args) {
+
+        try (Connection myConn = DriverManager.getConnection(MYSQL_URL, USER, PASSWORD);
+             Statement myStmt = myConn.createStatement()) {
 
             System.out.println("Database connection successful!\n");
 
-            // 2. Create a statement
-            myStmt = myConn.createStatement();
-
-            // 3. Execute SQL query
-            myRs = myStmt.executeQuery("select * from employees");
-
-            // 4. Process the result set
-            while (myRs.next()) {
-                System.out.println(myRs.getString("last_name") + ", "
-                        + myRs.getString("first_name") + ", "
-                        + myRs.getString("email"));
+            try (ResultSet myRs = myStmt.executeQuery(SELECT_FROM_EMPLOYEES)) {
+                while (myRs.next()) {
+                    System.out.println(myRs.getString("last_name") + ", "
+                            + myRs.getString("first_name") + ", "
+                            + myRs.getString("email"));
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
-        }
-        catch (Exception exc) {
-            exc.printStackTrace();
-        }
-        finally {
-            if (myRs != null) {
-                myRs.close();
-            }
-
-            if (myStmt != null) {
-                myStmt.close();
-            }
-
-            if (myConn != null) {
-                myConn.close();
-            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }
