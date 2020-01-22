@@ -30,6 +30,7 @@ public class JdbcDelete {
             // Call helper method to display the employee's information
             System.out.println("AFTER THE DELETE..." + "\nRows affected = " + rowsAffected);
             displayEmployee(myConn, "John", "Doe");
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -65,8 +66,8 @@ public class JdbcDelete {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-        } catch (Exception exc) {
-            exc.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }
