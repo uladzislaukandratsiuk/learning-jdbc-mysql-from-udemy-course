@@ -3,7 +3,7 @@
    
    ### Prerequisites
             
-           instal mysql workbench
+           install mysql workbench
             
            install mysql-connector-java-5.1.33
    
