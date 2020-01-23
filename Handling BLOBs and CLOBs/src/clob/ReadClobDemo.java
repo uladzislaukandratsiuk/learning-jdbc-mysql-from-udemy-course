@@ -1,15 +1,15 @@
-package blob;
+package clob;
 
 import java.io.*;
 import java.sql.*;
 
-public class ReadBlobDemo {
+public class ReadClobDemo {
 
     private static final String MYSQL_URL = "jdbc:mysql://localhost:3306/demo";
     private static final String USER = "student";
     private static final String PASSWORD = "student";
 
-    private static final String SAMPLE_RESUME_PDF_PATH = "Handling BLOBs and CLOBs/src/blob/resume_from_db.pdf";
+    private static final String SAMPLE_RESUME_PDF_PATH = "Handling BLOBs and CLOBs/src/clob/resume_from_db.txt";
 
     private static final String SELECT_RESUME = "select resume from employees where email='john.doe@foo.com'";
 
@@ -24,15 +24,15 @@ public class ReadBlobDemo {
 
             if (myRs.next()) {
 
-                try (FileOutputStream output = new FileOutputStream(theFile);
-                     InputStream input = myRs.getBinaryStream("resume")) {
+                try (FileWriter output = new FileWriter(theFile);
+                     Reader input = myRs.getCharacterStream("resume")) {
 
                     System.out.println("Reading resume from database...");
                     System.out.println(SELECT_RESUME);
 
-                    byte[] buffer = new byte[1024];
-                    while (input.read(buffer) > 0) {
-                        output.write(buffer);
+                    int theChar;
+                    while ((theChar = input.read()) > 0) {
+                        output.write(theChar);
                     }
 
                     System.out.println("\nSaved to file: " + theFile.getAbsolutePath());
